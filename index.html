@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استبيان تأثير Photomath على تعلم الرياضيات</title>
+    <style>
+        /* CSS Styles */
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --accent-color: #FF9800;
+            --dark-color: #333;
+            --light-color: #f4f4f9;
+            --error-color: #f44336;
+            --success-color: #4CAF50;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            transition: background-color 0.5s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 20px 20px;
+            animation: fadeIn 1s ease;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .welcome-message {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease;
+            display: none;
+        }
+        
+        .welcome-message.show {
+            display: block;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem 1rem;
+            cursor: pointer;
+            background: #ddd;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .survey-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .question-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .question-container:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            color: var(--primary-color);
+        }
+        
+        .option input {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            display: block;
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .submit-btn:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .results-title {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .result-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .result-answer {
+            color: var(--primary-color);
+        }
+        
+        .thank-you {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            display: none;
+        }
+        
+        .thank-you.show {
+            display: block;
+            animation: bounce 1s ease;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 1rem 0;
+            height: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content {
+                padding: 1rem;
+            }
+            
+            .question-container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>استبيان تأثير تطبيق Photomath</h1>
+            <p>شارك برأيك حول استخدام الذكاء الاصطناعي في تعليم الرياضيات!</p>
+        </header>
+        
+        <div class="welcome-message" id="welcomeMessage">
+            <h2>مرحباً بك في استبياننا!</h2>
+            <p>نحن نقدر وقتك ومساهمتك في هذا البحث الهام. سيستغرق الاستبيان حوالي 5 دقائق فقط.</p>
+            <p>شكراً لمساهمتك في تحسين تجربة تعليم الرياضيات!</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('students')">طلاب</button>
+            <button class="tab-btn" onclick="openTab('teachers')">معلمين</button>
+            <button class="tab-btn" onclick="openTab('parents')">أولياء أمور</button>
+        </div>
+        
+        <!-- استبيان الطلاب -->
+        <div id="students" class="tab-content active">
+            <h2 class="survey-title">استبيان الطالبات</h2>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="studentProgress"></div>
+            </div>
+            <div class="progress-text">إكمال الاستبيان: <span id="studentProgressText">0</span>%</div>
+            
+            <form id="student-form">
+                <div class="question-container">
+                    <div class="question">1. قبل استخدام Photomath، كيف كنتِ تقيمين صعوبة مادة الرياضيات؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="سهلة" onchange="updateProgress('student')"> سهلة</label>
+                        <label class="option"><input type="radio" name="q1" value="متوسطة" onchange="updateProgress('student')"> متوسطة</label>
+                        <label class="option"><input type="radio" name="q1" value="صعبة" onchange="updateProgress('student')"> صعبة</label>
+                        <label class="option"><input type="radio" name="q1" value="صعبة جدًا" onchange="updateProgress('student')"> صعبة جدًا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">2. هل ساعدك التطبيق في فهم خطوات حل المسائل الرياضية؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="نعم، بشكل كبير" onchange="updateProgress('student')"> نعم، بشكل كبير</label>
+                        <label class="option"><input type="radio" name="q2" value="نعم، ولكن بشكل محدود" onchange="updateProgress('student')"> نعم، ولكن بشكل محدود</label>
+                        <label class="option"><input type="radio" name="q2" value="لا" onchange="updateProgress('student')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">3. ما هي أكثر ميزة أعجبتك في Photomath؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="الشرح التفصيلي خطوة بخطوة" onchange="updateProgress('student')"> الشرح التفصيلي خطوة بخطوة</label>
+                        <label class="option"><input type="radio" name="q3" value="السرعة في الحصول على الإجابة" onchange="updateProgress('student')"> السرعة في الحصول على الإجابة</label>
+                        <label class="option"><input type="radio" name="q3" value="سهولة استخدام التطبيق" onchange="updateProgress('student')"> سهولة استخدام التطبيق</label>
+                        <label class="option"><input type="radio" name="q3" value="القدرة على حل مسائل متنوعة" onchange="updateProgress('student')"> القدرة على حل مسائل متنوعة</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">4. هل شعرتِ بتحسن في درجاتك بعد استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="نعم" onchange="updateProgress('student')"> نعم</label>
+                        <label class="option"><input type="radio" name="q4" value="لا" onchange="updateProgress('student')"> لا</label>
+                        <label class="option"><input type="radio" name="q4" value="لست متأكدة" onchange="updateProgress('student')"> لست متأكدة</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">5. هل تنصحين زميلاتك باستخدام Photomath؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="نعم" onchange="updateProgress('student')"> نعم</label>
+                        <label class="option"><input type="radio" name="q5" value="لا" onchange="updateProgress('student')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">6. كم مرة تستخدمين التطبيق أسبوعياً؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="أقل من مرة واحدة" onchange="updateProgress('student')"> أقل من مرة واحدة</label>
+                        <label class="option"><input type="radio" name="q6" value="1-3 مرات" onchange="updateProgress('student')"> 1-3 مرات</label>
+                        <label class="option"><input type="radio" name="q6" value="4-6 مرات" onchange="updateProgress('student')"> 4-6 مرات</label>
+                        <label class="option"><input type="radio" name="q6" value="أكثر من 6 مرات" onchange="updateProgress('student')"> أكثر من 6 مرات</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">7. هل تعتقدين أن التطبيق يحل محل المعلم؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="نعم تماماً" onchange="updateProgress('student')"> نعم تماماً</label>
+                        <label class="option"><input type="radio" name="q7" value="جزئياً فقط" onchange="updateProgress('student')"> جزئياً فقط</label>
+                        <label class="option"><input type="radio" name="q7" value="لا" onchange="updateProgress('student')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">8. ما هو أكثر جانب استفدت منه في التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="حل الواجبات المدرسية" onchange="updateProgress('student')"> حل الواجبات المدرسية</label>
+                        <label class="option"><input type="radio" name="q8" value="التحضير للاختبارات" onchange="updateProgress('student')"> التحضير للاختبارات</label>
+                        <label class="option"><input type="radio" name="q8" value="فهم المفاهيم الصعبة" onchange="updateProgress('student')"> فهم المفاهيم الصعبة</label>
+                        <label class="option"><input type="radio" name="q8" value="مراجعة الدروس" onchange="updateProgress('student')"> مراجعة الدروس</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">9. هل واجهتك أي صعوبات في استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="نعم، صعوبة في فهم بعض الحلول" onchange="updateProgress('student')"> نعم، صعوبة في فهم بعض الحلول</label>
+                        <label class="option"><input type="radio" name="q9" value="نعم، مشاكل تقنية" onchange="updateProgress('student')"> نعم، مشاكل تقنية</label>
+                        <label class="option"><input type="radio" name="q9" value="لا، كان سهل الاستخدام" onchange="updateProgress('student')"> لا، كان سهل الاستخدام</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">10. كيف تقيمين واجهة المستخدم للتطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="ممتازة" onchange="updateProgress('student')"> ممتازة</label>
+                        <label class="option"><input type="radio" name="q10" value="جيدة" onchange="updateProgress('student')"> جيدة</label>
+                        <label class="option"><input type="radio" name="q10" value="متوسطة" onchange="updateProgress('student')"> متوسطة</label>
+                        <label class="option"><input type="radio" name="q10" value="ضعيفة" onchange="updateProgress('student')"> ضعيفة</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">11. هل تعتقدين أن التطبيق ساعد في زيادة ثقتك بنفسك في مادة الرياضيات؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="نعم، بشكل كبير" onchange="updateProgress('student')"> نعم، بشكل كبير</label>
+                        <label class="option"><input type="radio" name="q11" value="نعم، قليلاً" onchange="updateProgress('student')"> نعم، قليلاً</label>
+                        <label class="option"><input type="radio" name="q11" value="لا" onchange="updateProgress('student')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">12. ما هو تقييمك العام للتطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="5 نجوم (ممتاز)" onchange="updateProgress('student')"> 5 نجوم (ممتاز)</label>
+                        <label class="option"><input type="radio" name="q12" value="4 نجوم (جيد جداً)" onchange="updateProgress('student')"> 4 نجوم (جيد جداً)</label>
+                        <label class="option"><input type="radio" name="q12" value="3 نجوم (جيد)" onchange="updateProgress('student')"> 3 نجوم (جيد)</label>
+                        <label class="option"><input type="radio" name="q12" value="نجمتان (مقبول)" onchange="updateProgress('student')"> نجمتان (مقبول)</label>
+                        <label class="option"><input type="radio" name="q12" value="نجمة واحدة (ضعيف)" onchange="updateProgress('student')"> نجمة واحدة (ضعيف)</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">13. هل تستخدمين التطبيق بمفردك أم بمساعدة الآخرين؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="بمفردي" onchange="updateProgress('student')"> بمفردي</label>
+                        <label class="option"><input type="radio" name="q13" value="بمساعدة الأصدقاء" onchange="updateProgress('student')"> بمساعدة الأصدقاء</label>
+                        <label class="option"><input type="radio" name="q13" value="بمساعدة المعلم" onchange="updateProgress('student')"> بمساعدة المعلم</label>
+                        <label class="option"><input type="radio" name="q13" value="بمساعدة الأسرة" onchange="updateProgress('student')"> بمساعدة الأسرة</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">14. ما هو نوع المسائل التي تستخدمين التطبيق لحلها غالباً؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q14" value="المسائل الحسابية" onchange="updateProgress('student')"> المسائل الحسابية</label>
+                        <label class="option"><input type="radio" name="q14" value="المسائل الجبرية" onchange="updateProgress('student')"> المسائل الجبرية</label>
+                        <label class="option"><input type="radio" name="q14" value="المسائل الهندسية" onchange="updateProgress('student')"> المسائل الهندسية</label>
+                        <label class="option"><input type="radio" name="q14" value="جميع الأنواع" onchange="updateProgress('student')"> جميع الأنواع</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">15. هل تعتقدين أن التطبيق مناسب لمستواك الدراسي؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="نعم، تماماً" onchange="updateProgress('student')"> نعم، تماماً</label>
+                        <label class="option"><input type="radio" name="q15" value="نعم، ولكن يحتاج لتطوير" onchange="updateProgress('student')"> نعم، ولكن يحتاج لتطوير</label>
+                        <label class="option"><input type="radio" name="q15" value="لا، ليس مناسباً" onchange="updateProgress('student')"> لا، ليس مناسباً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">16. هل تواجهين صعوبة في قراءة الخطوات الرياضية المعروضة؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="نعم، غالباً" onchange="updateProgress('student')"> نعم، غالباً</label>
+                        <label class="option"><input type="radio" name="q16" value="أحياناً" onchange="updateProgress('student')"> أحياناً</label>
+                        <label class="option"><input type="radio" name="q16" value="نادراً" onchange="updateProgress('student')"> نادراً</label>
+                        <label class="option"><input type="radio" name="q16" value="لا أبداً" onchange="updateProgress('student')"> لا أبداً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">17. هل تحبين أن يكون هناك تطبيق مشابه للعلوم الأخرى؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q17" value="نعم، للفيزياء" onchange="updateProgress('student')"> نعم، للفيزياء</label>
+                        <label class="option"><input type="radio" name="q17" value="نعم، للكيمياء" onchange="updateProgress('student')"> نعم، للكيمياء</label>
+                        <label class="option"><input type="radio" name="q17" value="نعم، لجميع المواد" onchange="updateProgress('student')"> نعم، لجميع المواد</label>
+                        <label class="option"><input type="radio" name="q17" value="لا، يكفي الرياضيات" onchange="updateProgress('student')"> لا، يكفي الرياضيات</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">18. ما هو أكثر شيء تودين تحسينه في التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="وضوح الشرح" onchange="updateProgress('student')"> وضوح الشرح</label>
+                        <label class="option"><input type="radio" name="q18" value="سرعة التطبيق" onchange="updateProgress('student')"> سرعة التطبيق</label>
+                        <label class="option"><input type="radio" name="q18" value="تنوع المسائل" onchange="updateProgress('student')"> تنوع المسائل</label>
+                        <label class="option"><input type="radio" name="q18" value="التصميم العام" onchange="updateProgress('student')"> التصميم العام</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">19. هل تعتقدين أن استخدام التطبيق وفر لك الوقت؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="نعم، كثيراً" onchange="updateProgress('student')"> نعم، كثيراً</label>
+                        <label class="option"><input type="radio" name="q19" value="نعم، قليلاً" onchange="updateProgress('student')"> نعم، قليلاً</label>
+                        <label class="option"><input type="radio" name="q19" value="لا" onchange="updateProgress('student')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">20. ما هي نصيحتك للطالبات اللواتي يفكرن في استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q20" value="استخدمنه كأداة مساعدة فقط" onchange="updateProgress('student')"> استخدمنه كأداة مساعدة فقط</label>
+                        <label class="option"><input type="radio" name="q20" value="استخدمنه بحذر" onchange="updateProgress('student')"> استخدمنه بحذر</label>
+                        <label class="option"><input type="radio" name="q20" value="استخدمنه بحرية" onchange="updateProgress('student')"> استخدمنه بحرية</label>
+                        <label class="option"><input type="radio" name="q20" value="لا أنصح به" onchange="updateProgress('student')"> لا أنصح به</label>
+                    </div>
+                </div>
+                
+                <button type="button" class="submit-btn" onclick="submitForm('student-form', 'student-results')">إرسال الاستبيان</button>
+            </form>
+            
+            <div class="thank-you" id="studentThankYou">
+                <h3>شكراً لك على مشاركتك!</h3>
+                <p>مساهمتك تساعدنا في تحسين تجربة تعليم الرياضيات للجميع.</p>
+            </div>
+            
+            <div class="results" id="student-results">
+                <h3 class="results-title">نتائج استبيان الطالبات</h3>
+                <div id="student-results-content"></div>
+            </div>
+        </div>
+        
+        <!-- استبيان المعلمين -->
+        <div id="teachers" class="tab-content">
+            <h2 class="survey-title">استبيان المعلمين</h2>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="teacherProgress"></div>
+            </div>
+            <div class="progress-text">إكمال الاستبيان: <span id="teacherProgressText">0</span>%</div>
+            
+            <form id="teacher-form">
+                <div class="question-container">
+                    <div class="question">1. هل تعتقد أن Photomath يمكن أن يكون أداة مفيدة في الفصل الدراسي؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="نعم" onchange="updateProgress('teacher')"> نعم</label>
+                        <label class="option"><input type="radio" name="q1" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                        <label class="option"><input type="radio" name="q1" value="محايد" onchange="updateProgress('teacher')"> محايد</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">2. ما هي أبرز سلبيات استخدام التطبيق من وجهة نظرك؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="الاعتماد الزائد عليه" onchange="updateProgress('teacher')"> الاعتماد الزائد عليه</label>
+                        <label class="option"><input type="radio" name="q2" value="عدم تنمية التفكير النقدي" onchange="updateProgress('teacher')"> عدم تنمية التفكير النقدي</label>
+                        <label class="option"><input type="radio" name="q2" value="صعوبة تطبيقه على بعض المناهج" onchange="updateProgress('teacher')"> صعوبة تطبيقه على بعض المناهج</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">3. هل لاحظت تحسنًا في أداء الطالبات بعد استخدام Photomath؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="نعم، بشكل ملحوظ" onchange="updateProgress('teacher')"> نعم، بشكل ملحوظ</label>
+                        <label class="option"><input type="radio" name="q3" value="نعم، ولكن بشكل طفيف" onchange="updateProgress('teacher')"> نعم، ولكن بشكل طفيف</label>
+                        <label class="option"><input type="radio" name="q3" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">4. كيف تستخدم Photomath في العملية التعليمية؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="كأداة مساعدة في الشرح" onchange="updateProgress('teacher')"> كأداة مساعدة في الشرح</label>
+                        <label class="option"><input type="radio" name="q4" value="لتحضير الدروس" onchange="updateProgress('teacher')"> لتحضير الدروس</label>
+                        <label class="option"><input type="radio" name="q4" value="لا أستخدمه" onchange="updateProgress('teacher')"> لا أستخدمه</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">5. ما هو تقييمك لدقة الحلول التي يقدمها التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="دقيقة جداً" onchange="updateProgress('teacher')"> دقيقة جداً</label>
+                        <label class="option"><input type="radio" name="q5" value="دقيقة في الغالب" onchange="updateProgress('teacher')"> دقيقة في الغالب</label>
+                        <label class="option"><input type="radio" name="q5" value="تحتوي على أخطاء" onchange="updateProgress('teacher')"> تحتوي على أخطاء</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">6. هل توصي زملاءك باستخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="نعم" onchange="updateProgress('teacher')"> نعم</label>
+                        <label class="option"><input type="radio" name="q6" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                        <label class="option"><input type="radio" name="q6" value="بحذر" onchange="updateProgress('teacher')"> بحذر</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">7. ما هو أكثر جانب إيجابي في التطبيق من وجهة نظرك؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="توفير الوقت" onchange="updateProgress('teacher')"> توفير الوقت</label>
+                        <label class="option"><input type="radio" name="q7" value="الشرح التفصيلي" onchange="updateProgress('teacher')"> الشرح التفصيلي</label>
+                        <label class="option"><input type="radio" name="q7" value="التفاعل مع الطلاب" onchange="updateProgress('teacher')"> التفاعل مع الطلاب</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">8. هل تعتقد أن التطبيق يمكن أن يحل محل المعلم؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="نعم" onchange="updateProgress('teacher')"> نعم</label>
+                        <label class="option"><input type="radio" name="q8" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                        <label class="option"><input type="radio" name="q8" value="جزئياً" onchange="updateProgress('teacher')"> جزئياً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">9. كيف تقيم واجهة المستخدم للتطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="ممتازة" onchange="updateProgress('teacher')"> ممتازة</label>
+                        <label class="option"><input type="radio" name="q9" value="جيدة" onchange="updateProgress('teacher')"> جيدة</label>
+                        <label class="option"><input type="radio" name="q9" value="متوسطة" onchange="updateProgress('teacher')"> متوسطة</label>
+                        <label class="option"><input type="radio" name="q9" value="ضعيفة" onchange="updateProgress('teacher')"> ضعيفة</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">10. هل تواجه صعوبات تقنية عند استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="نعم، غالباً" onchange="updateProgress('teacher')"> نعم، غالباً</label>
+                        <label class="option"><input type="radio" name="q10" value="أحياناً" onchange="updateProgress('teacher')"> أحياناً</label>
+                        <label class="option"><input type="radio" name="q10" value="نادراً" onchange="updateProgress('teacher')"> نادراً</label>
+                        <label class="option"><input type="radio" name="q10" value="لا أبداً" onchange="updateProgress('teacher')"> لا أبداً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">11. هل تستخدم التطبيق في تحضير الدروس؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="نعم، دائماً" onchange="updateProgress('teacher')"> نعم، دائماً</label>
+                        <label class="option"><input type="radio" name="q11" value="نعم، أحياناً" onchange="updateProgress('teacher')"> نعم، أحياناً</label>
+                        <label class="option"><input type="radio" name="q11" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">12. ما هو تقييمك العام للتطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="5 نجوم (ممتاز)" onchange="updateProgress('teacher')"> 5 نجوم (ممتاز)</label>
+                        <label class="option"><input type="radio" name="q12" value="4 نجوم (جيد جداً)" onchange="updateProgress('teacher')"> 4 نجوم (جيد جداً)</label>
+                        <label class="option"><input type="radio" name="q12" value="3 نجوم (جيد)" onchange="updateProgress('teacher')"> 3 نجوم (جيد)</label>
+                        <label class="option"><input type="radio" name="q12" value="نجمتان (مقبول)" onchange="updateProgress('teacher')"> نجمتان (مقبول)</label>
+                        <label class="option"><input type="radio" name="q12" value="نجمة واحدة (ضعيف)" onchange="updateProgress('teacher')"> نجمة واحدة (ضعيف)</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">13. هل تعتقد أن التطبيق مناسب للمرحلة الدراسية التي تدرسها؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="نعم، تماماً" onchange="updateProgress('teacher')"> نعم، تماماً</label>
+                        <label class="option"><input type="radio" name="q13" value="نعم، ولكن يحتاج لتطوير" onchange="updateProgress('teacher')"> نعم، ولكن يحتاج لتطوير</label>
+                        <label class="option"><input type="radio" name="q13" value="لا، ليس مناسباً" onchange="updateProgress('teacher')"> لا، ليس مناسباً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">14. هل تلاحظ أن الطلاب أصبحوا أكثر اعتماداً على التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q14" value="نعم، بشكل كبير" onchange="updateProgress('teacher')"> نعم، بشكل كبير</label>
+                        <label class="option"><input type="radio" name="q14" value="نعم، قليلاً" onchange="updateProgress('teacher')"> نعم، قليلاً</label>
+                        <label class="option"><input type="radio" name="q14" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">15. ما هي نصيحتك للطلاب حول استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="استخدموه كأداة مساعدة فقط" onchange="updateProgress('teacher')"> استخدموه كأداة مساعدة فقط</label>
+                        <label class="option"><input type="radio" name="q15" value="استخدموه بحذر" onchange="updateProgress('teacher')"> استخدموه بحذر</label>
+                        <label class="option"><input type="radio" name="q15" value="استخدموه بحرية" onchange="updateProgress('teacher')"> استخدموه بحرية</label>
+                        <label class="option"><input type="radio" name="q15" value="لا أنصح به" onchange="updateProgress('teacher')"> لا أنصح به</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">16. هل تعتقد أن التطبيق يساعد في تعزيز التعلم الذاتي؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="نعم، بشكل كبير" onchange="updateProgress('teacher')"> نعم، بشكل كبير</label>
+                        <label class="option"><input type="radio" name="q16" value="نعم، قليلاً" onchange="updateProgress('teacher')"> نعم، قليلاً</label>
+                        <label class="option"><input type="radio" name="q16" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">17. هل تواجه صعوبة في قراءة الخطوات الرياضية المعروضة؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q17" value="نعم، غالباً" onchange="updateProgress('teacher')"> نعم، غالباً</label>
+                        <label class="option"><input type="radio" name="q17" value="أحياناً" onchange="updateProgress('teacher')"> أحياناً</label>
+                        <label class="option"><input type="radio" name="q17" value="نادراً" onchange="updateProgress('teacher')"> نادراً</label>
+                        <label class="option"><input type="radio" name="q17" value="لا أبداً" onchange="updateProgress('teacher')"> لا أبداً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">18. ما هو أكثر شيء تود تحسينه في التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="وضوح الشرح" onchange="updateProgress('teacher')"> وضوح الشرح</label>
+                        <label class="option"><input type="radio" name="q18" value="سرعة التطبيق" onchange="updateProgress('teacher')"> سرعة التطبيق</label>
+                        <label class="option"><input type="radio" name="q18" value="تنوع المسائل" onchange="updateProgress('teacher')"> تنوع المسائل</label>
+                        <label class="option"><input type="radio" name="q18" value="التصميم العام" onchange="updateProgress('teacher')"> التصميم العام</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">19. هل تعتقد أن التطبيق وفر لك الوقت في التحضير للدروس؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="نعم، كثيراً" onchange="updateProgress('teacher')"> نعم، كثيراً</label>
+                        <label class="option"><input type="radio" name="q19" value="نعم، قليلاً" onchange="updateProgress('teacher')"> نعم، قليلاً</label>
+                        <label class="option"><input type="radio" name="q19" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">20. هل ترغب في تدريب الطلاب على استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q20" value="نعم، بالتأكيد" onchange="updateProgress('teacher')"> نعم، بالتأكيد</label>
+                        <label class="option"><input type="radio" name="q20" value="ربما" onchange="updateProgress('teacher')"> ربما</label>
+                        <label class="option"><input type="radio" name="q20" value="لا" onchange="updateProgress('teacher')"> لا</label>
+                    </div>
+                </div>
+                
+                <button type="button" class="submit-btn" onclick="submitForm('teacher-form', 'teacher-results')">إرسال الاستبيان</button>
+            </form>
+            
+            <div class="thank-you" id="teacherThankYou">
+                <h3>شكراً لك على مشاركتك!</h3>
+                <p>مساهمتك تساعدنا في تحسين تجربة تعليم الرياضيات للجميع.</p>
+            </div>
+            
+            <div class="results" id="teacher-results">
+                <h3 class="results-title">نتائج استبيان المعلمين</h3>
+                <div id="teacher-results-content"></div>
+            </div>
+        </div>
+        
+        <!-- استبيان أولياء الأمور -->
+        <div id="parents" class="tab-content">
+            <h2 class="survey-title">استبيان أولياء الأمور</h2>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="parentProgress"></div>
+            </div>
+            <div class="progress-text">إكمال الاستبيان: <span id="parentProgressText">0</span>%</div>
+            
+            <form id="parent-form">
+                <div class="question-container">
+                    <div class="question">1. هل تلاحظون أن Photomath ساعد ابنكم/ابنتكم في حل واجبات الرياضيات؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="نعم" onchange="updateProgress('parent')"> نعم</label>
+                        <label class="option"><input type="radio" name="q1" value="لا" onchange="updateProgress('parent')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">2. هل تواجهون أي مخاوف من استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="نعم (مثل: تقليل الجهد الذاتي)" onchange="updateProgress('parent')"> نعم (مثل: تقليل الجهد الذاتي)</label>
+                        <label class="option"><input type="radio" name="q2" value="لا" onchange="updateProgress('parent')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">3. كم مرة يستخدم ابنكم/ابنتكم التطبيق أسبوعياً؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="أقل من مرة واحدة" onchange="updateProgress('parent')"> أقل من مرة واحدة</label>
+                        <label class="option"><input type="radio" name="q3" value="1-3 مرات" onchange="updateProgress('parent')"> 1-3 مرات</label>
+                        <label class="option"><input type="radio" name="q3" value="4-6 مرات" onchange="updateProgress('parent')"> 4-6 مرات</label>
+                        <label class="option"><input type="radio" name="q3" value="أكثر من 6 مرات" onchange="updateProgress('parent')"> أكثر من 6 مرات</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">4. هل لاحظتم تحسنًا في درجات ابنكم/ابنتكم بعد استخدام التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="نعم" onchange="updateProgress('parent')"> نعم</label>
+                        <label class="option"><input type="radio" name="q4" value="لا" onchange="updateProgress('parent')"> لا</label>
+                        <label class="option"><input type="radio" name="q4" value="لست متأكداً" onchange="updateProgress('parent')"> لست متأكداً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">5. هل تعتقدون أن التطبيق مناسب لمستوى ابنكم/ابنتكم الدراسي؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="نعم، تماماً" onchange="updateProgress('parent')"> نعم، تماماً</label>
+                        <label class="option"><input type="radio" name="q5" value="نعم، ولكن يحتاج لتطوير" onchange="updateProgress('parent')"> نعم، ولكن يحتاج لتطوير</label>
+                        <label class="option"><input type="radio" name="q5" value="لا، ليس مناسباً" onchange="updateProgress('parent')"> لا، ليس مناسباً</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">6. هل تواجهون صعوبة في مراقبة استخدام ابنكم/ابنتكم للتطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="نعم" onchange="updateProgress('parent')"> نعم</label>
+                        <label class="option"><input type="radio" name="q6" value="لا" onchange="updateProgress('parent')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">7. ما هو تقييمكم العام للتطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="5 نجوم (ممتاز)" onchange="updateProgress('parent')"> 5 نجوم (ممتاز)</label>
+                        <label class="option"><input type="radio" name="q7" value="4 نجوم (جيد جداً)" onchange="updateProgress('parent')"> 4 نجوم (جيد جداً)</label>
+                        <label class="option"><input type="radio" name="q7" value="3 نجوم (جيد)" onchange="updateProgress('parent')"> 3 نجوم (جيد)</label>
+                        <label class="option"><input type="radio" name="q7" value="نجمتان (مقبول)" onchange="updateProgress('parent')"> نجمتان (مقبول)</label>
+                        <label class="option"><input type="radio" name="q7" value="نجمة واحدة (ضعيف)" onchange="updateProgress('parent')"> نجمة واحدة (ضعيف)</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">8. هل تعتقدون أن التطبيق يساعد في تعزيز ثقة ابنكم/ابنتكم في الرياضيات؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="نعم، بشكل كبير" onchange="updateProgress('parent')"> نعم، بشكل كبير</label>
+                        <label class="option"><input type="radio" name="q8" value="نعم، قليلاً" onchange="updateProgress('parent')"> نعم، قليلاً</label>
+                        <label class="option"><input type="radio" name="q8" value="لا" onchange="updateProgress('parent')"> لا</label>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question">9. هل تواجهون مشاكل في فهم الخطوات التي يعرضها التطبيق؟</div>
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="نعم، غالباً" onchange="updateProgress('parent')"> نعم، غالباً</label>
+                        <label class="option"><input type="radio" name="q9" value="أحياناً" onchange="updateProgress('parent')"> أحياناً</label>
+                        <label class="option"><input type="radio" name="q9" value="نادراً" onchange="updateProgress('parent')"> نادراً</label>
+                        <label class="option"><input type="radio" name="q9
